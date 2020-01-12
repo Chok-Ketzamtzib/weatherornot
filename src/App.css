@@ -15,6 +15,23 @@ footer {
   height: 160px; /* Set the fixed height of the footer here */
 }
 
+.col-md-4, .col-sm-12 {
+  padding: 0;
+}
+
+.col-md-4 p, .col-sm-12 p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+.col-md-4 img {
+  width: 100%;
+  margin: 0;
+}
+
 /* Override Bootstrap Styling */
 
 .btn-primary {
