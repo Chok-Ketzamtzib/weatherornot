@@ -6,6 +6,7 @@ import pandas as pd
 import json
 import pyodbc
 import datetime
+import itertools
 
 
 #Azure SQL credentials
@@ -16,9 +17,6 @@ password = 'Alicehu!1'
 driver= '{ODBC Driver 17 for SQL Server}'
 cnxn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password)
 
-
-from constants import CONSTANTS
-from sample_data import sample_data
 
 from azure.cognitiveservices.language.textanalytics import TextAnalyticsClient
 from msrest.authentication import CognitiveServicesCredentials
@@ -51,7 +49,10 @@ app = Flask(__name__, static_folder='build')
 @app.route('/', methods=['GET'])
 def default():
     print('Hello')
-    return render_template('index.html')
+    return render_template('index.html', src=["https://www.youtube.com/embed/TImO_RquoW8?controls=0",
+     "https://www.youtube.com/embed/TImO_RquoW8?controls=0", "https://www.youtube.com/embed/TImO_RquoW8?controls=0",
+      "https://www.youtube.com/embed/TImO_RquoW8?controls=0", "https://www.youtube.com/embed/TImO_RquoW8?controls=0",
+       "https://www.youtube.com/embed/TImO_RquoW8?controls=0"], title=['a', 'b', 'c', 'd', 'e', 'f'])
 
 # @app.route('/insertSearchResults')
 # def insertSearchResults():
@@ -101,7 +102,8 @@ def authenticateClient():
 
 @app.route('/cluster')
 def cluster():
-    client = authenticateClient()    
+    client = authenticateClient()
+    result = ''    
     
     #use cursor
     cursor = cnxn.cursor()
@@ -118,7 +120,7 @@ def cluster():
         response = client.entities(documents=twts)
 
         for document in response.documents:
-            print("Text: ", document.text)
+            result.append("Text: ", document.text)
             print("\tKey Entities:")
             for entity in document.entities:
                 print("\t\t", "NAME: ", entity.name, "\tType: ",
@@ -129,19 +131,19 @@ def cluster():
 
     except Exception as err:
         print("Encountered exception. {}".format(err))
-    #entity_recognition()
-    return "test"
+    entity_recognition()
+    return result
            
 
 # Catching all routes
 # This route is used to serve all the routes in the frontend application after deployment.
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     file_to_serve = path if path and exists(join(app.static_folder, path)) else 'index.html'
-#     return send_from_directory(app.static_folder, file_to_serve)
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    file_to_serve = path if path and exists(join(app.static_folder, path)) else 'index.html'
+    return send_from_directory(app.static_folder, file_to_serve)
 
-Error Handler
+# Error Handler
 @app.errorhandler(404)
 def page_not_found(error):
     json_response = jsonify({'error': 'Page not found'})

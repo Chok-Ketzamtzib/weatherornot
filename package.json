@@ -5,11 +5,12 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
+    "fs-extra": "8.1.0",
+    "puppeteer": "^2.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "3.2.0",
-    "fs-extra": "8.1.0"
+    "react-scripts": "3.2.0"
   },
   "eslintConfig": {
     "extends": "react-app"
