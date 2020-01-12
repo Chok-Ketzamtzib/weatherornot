@@ -205,22 +205,26 @@
 
 console.log(`iframes: ${$('iframe')}`)
 
-$( "a" ).on("hover", function() {
-	console.log("test")
-	$( this ).fadeOut( 100 );
-	$( this ).fadeIn( 500 );
-  });
+// $("iframe").hover( function 
+//  {   
+// 	console.log("test")
+// 	nowPlaying = $(this).attr('src');
+// 	$(this).attr('src', nowPlaying + '&autoplay=1');
+//      //this.play();
+//  },  function 
+//  {
+// 	$(this).attr('src', nowPlaying);
+// 	 //this.pause();
+//  })
 
-$("iframe").hover( function hoverVideo(e)
- {   
-	console.log("test")
+var nowPlaying;
+
+ $("iframe").hover(function () {
 	nowPlaying = $(this).attr('src');
-	$(this).attr('src', nowPlaying + '&autoplay=1');
-     //this.play();
- },  function hideVideo(e)
- {
-	 this.pause();
- })
+	$(this).attr('src', nowPlaying+ '&autoplay=1');
+  }, function() {
+	$(this).attr('src', nowPlaying);
+  });
 
 	// Header.
 		if ($banner.length > 0
