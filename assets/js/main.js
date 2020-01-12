@@ -4,6 +4,7 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
+
 (function($) {
 
 	var	$window = $(window),
@@ -122,7 +123,7 @@
 		$tiles.each(function() {
 
 			var $this = $(this),
-				$image = $this.find('.image'), $img = $image.find('img'),
+				$image = $this.find('.image'), $img = $image.find('iframe'),
 				$link = $this.find('.link'),
 				x;
 
@@ -183,6 +184,43 @@
 				}
 
 		});
+
+// 		var vid = $('iframe');
+// [].forEach.call(vid, function (item) {
+	
+//     item.addEventListener('mouseover', hoverVideo, false);
+//     item.addEventListener('mouseout', hideVideo, false);
+// });
+
+// function hoverVideo(e)
+// {   
+// 	console.log("test")
+//     this.play();
+// }
+// function hideVideo(e)
+// {
+// 	this.pause();
+	
+// }
+
+console.log(`iframes: ${$('iframe')}`)
+
+$( "a" ).on("hover", function() {
+	console.log("test")
+	$( this ).fadeOut( 100 );
+	$( this ).fadeIn( 500 );
+  });
+
+$("iframe").hover( function hoverVideo(e)
+ {   
+	console.log("test")
+	nowPlaying = $(this).attr('src');
+	$(this).attr('src', nowPlaying + '&autoplay=1');
+     //this.play();
+ },  function hideVideo(e)
+ {
+	 this.pause();
+ })
 
 	// Header.
 		if ($banner.length > 0

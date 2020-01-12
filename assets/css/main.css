@@ -2742,7 +2742,7 @@ input, select, textarea {
 			-webkit-transition: -webkit-transform 0.25s ease, opacity 0.25s ease, -webkit-filter 1s ease, -webkit-filter 1s ease;
 			-ms-transition: -ms-transform 0.25s ease, opacity 0.25s ease, -ms-filter 1s ease, -webkit-filter 1s ease;
 			transition: transform 0.25s ease, opacity 0.25s ease, filter 1s ease, -webkit-filter 1s ease;
-			padding: 4em 4em 2em 4em ;
+			/*padding: 4em 4em 2em 4em ;*/
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: cover;
@@ -3950,3 +3950,13 @@ input, select, textarea {
 			opacity: 1;
 			visibility: visible;
 		}
+
+
+/*video*/
+.video {
+	z-index: 9999;
+}
+
+.major2 {
+	position: absolute;
+}
