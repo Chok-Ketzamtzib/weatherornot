@@ -2760,7 +2760,7 @@ input, select, textarea {
 			}
 
 			.tiles article header {
-				position: relative;
+				position: absolute;
 				z-index: 3;
 			}
 
@@ -2857,7 +2857,6 @@ input, select, textarea {
 		@media screen and (max-width: 1280px) {
 
 			.tiles article {
-				padding: 4em 3em 2em 3em ;
 				height: 30vh;
 				max-height: 30em;
 				min-height: 20em;
@@ -3954,9 +3953,11 @@ input, select, textarea {
 
 /*video*/
 .vidBlock {
-	z-index: 9999;
+	width: 100%;
+	height: 100%;
 }
 
-.major2 {
-	position: absolute;
+iframe {
+	width: 100%;
+	height: 100%;
 }

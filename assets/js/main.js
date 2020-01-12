@@ -219,11 +219,14 @@ console.log(`iframes: ${$('iframe')}`)
 
 var nowPlaying;
 
- $("iframe").hover(function () {
-	nowPlaying = $(this).attr('src');
-	$(this).attr('src', nowPlaying+ '&autoplay=1');
+ $("article").hover(function () {
+	nowPlaying = $(this).find('iframe').attr('src');
+	
+	$(this).find('iframe').attr('src', nowPlaying+ '&autoplay=1');
+	$(this).find('header').hide();
   }, function() {
-	$(this).attr('src', nowPlaying);
+	$(this).find('iframe').attr('src', nowPlaying);
+	$(this).find('header').show();
   });
 
 	// Header.
