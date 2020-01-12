@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿## Getting Started
+﻿﻿## Getting Started
 
 In the root directory of the project...
 
@@ -82,6 +81,3 @@ The front-end is served on http://localhost:3000/ and the back-end on http://loc
 
 
   This project was created using [Microsoft Web Template Studio](https://github.com/Microsoft/WebTemplateStudio).
-=======
-# weatherornot
->>>>>>> 8eb3c2d81088513c4afab22445bb834be423b55d
