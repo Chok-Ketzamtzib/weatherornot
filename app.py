@@ -39,7 +39,8 @@ Disasters = ['tornado', 'drought', 'hurricane', 'wildfire', 'heatwave',
 'thoughts and prayers', 'thoughts go out','prayers go out', 'weather',
 'natural disaster','heavy downpours']
 
-app = Flask(__name__, static_folder='build')
+app = Flask(__name__, static_folder='static/assets',
+            static_url_path='')
 
 # Grid Page Endpoint (Jon has no  clue, but William does have a clue)
 # @app.route(CONSTANTS['ENDPOINT']['GRID'])
@@ -107,12 +108,15 @@ def cluster():
     
     #use cursor
     cursor = cnxn.cursor()
-    cursor.execute('SELECT TOP 10 * FROM Tweets') #!!! 1500
+    cursor.execute('SELECT TOP 1500 * FROM Tweets') #!!! 1500
     columns = [column[0] for column in cursor.description]
     twts = []
+    i=0
 
     for row in cursor.fetchall():
         twts.append(dict(zip(columns, row)))
+        twts[i]["id"] = 1+i
+        i+=1
     cursor.commit()
     print(twts)
 
@@ -120,7 +124,8 @@ def cluster():
         response = client.entities(documents=twts)
 
         for document in response.documents:
-            result.append("Text: ", document.text)
+            score = 0
+            print("Document Id: ", document.id)
             print("\tKey Entities:")
             for entity in document.entities:
                 print("\t\t", "NAME: ", entity.name, "\tType: ",
@@ -128,10 +133,18 @@ def cluster():
                 for match in entity.matches:
                     print("\t\t\tOffset: ", match.offset, "\tLength: ", match.length, "\tScore: ",
                           "{:.2f}".format(match.entity_type_score))
-
+                if entity.type == "Location":
+                    if ((score == 0) or ("{:.2f}".format(int(match.entity_type_score))>score)):
+                        score = "{:.2f}".format(int(match.entity_type_score))
+                    twts[int(document.id)-1]["Location"] = [entity.name]
     except Exception as err:
         print("Encountered exception. {}".format(err))
-    entity_recognition()
+
+    print(twts)
+
+    # for i in twts (key_value.keys()) :  
+    #  print(i, end = " ") 
+
     return result
            
 
@@ -144,10 +157,10 @@ def catch_all(path):
     return send_from_directory(app.static_folder, file_to_serve)
 
 # Error Handler
-@app.errorhandler(404)
-def page_not_found(error):
-    json_response = jsonify({'error': 'Page not found'})
-    return make_response(json_response, CONSTANTS['HTTP_STATUS']['404_NOT_FOUND'])
+# @app.errorhandler(404)
+# def page_not_found(error):
+#     json_response = jsonify({'error': 'Page not found'})
+#     return make_response(json_response, CONSTANTS['HTTP_STATUS']['404_NOT_FOUND'])
 
 if __name__ == '__main__':
     app.run(port=5000)
