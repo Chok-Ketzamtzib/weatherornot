@@ -28,6 +28,10 @@ credentials['ACCESS_SECRET'] = '95ilPQV1yeoHiUdVSSCwUtPVe8G6UhZrm0wyqSUaYoldC'
 #twitter credential stored into json file
 with open("twitter_credentials.json", "w") as file:
     json.dump(credentials, file)
+Disasters = ['tornado', 'drought', 'hurricane', 'wildfire', 'heatwave',
+'thunderstorm','cylone','blizzard', 'storm', 'flood', 'earthquake',
+'thoughts and prayers', 'thoughts go out','prayers go out', 'weather',
+'natural disaster','heavy downpours']
 
 app = Flask(__name__, static_folder='build')
 
@@ -45,36 +49,44 @@ def test():
     #twitter search api
     python_tweets = Twython(creds['CONSUMER_KEY'], creds['CONSUMER_SECRET'])
     
-
-
-    query = {'q': 'tornado',
-        'result_type': 'popular',
-        'count': 100,
-        'lang': 'en',
-        } 
-
-    #dictionary
-    dict_ = {'user': [], 'date': [], 'text': [], 'favorite_count': []}
-    list_ = []
     cursor = cnxn.cursor()
     cursor.execute('delete from Tweets')
 
-    for status in python_tweets.search(**query)['statuses']:
-        #puts tweets into azure
-        cursor.execute('insert into Tweets values (?, ?, ?, ?, ?)', status['user']['screen_name'],  datetime.datetime.strptime(status['created_at'], '%a %b %d %H:%M:%S +0000 %Y'), status['text'], status['favorite_count'], status['retweet_count'])
-        #puts tweets into dict
-        dict_['user'].append(status['user']['screen_name'])
-        dict_['date'].append(status['created_at'])
-        dict_['text'].append(status['text'])
-        dict_['favorite_count'].append(status['favorite_count'])
-        #puts tweest into other dictionary
-        list_.append({
-            'user': status['user']['screen_name'],
-            'date': status['created_at'],
-            'text': status['text'],
-            'favorite_count': status['favorite_count']
-        })
+    for x in Disasters:
+        # dictionary and list set up
+        # dict_ = {'user': [], 'date': [], 'text': [], 'favorite_count': []}
+        # list_ = []
+        # class instantiation for SQL and deletion
+        
+        
+        query = {'q': x,
+            'result_type': 'mixed',
+            'count': '100',
+            'lang': 'en',
+            #'place': 'us',
+            'geo-code': '43.414315, -107.054662, 700mi'
+            } 
 
+        for status in python_tweets.search(**query)['statuses']:
+            #puts tweets into azure
+            cursor.execute('insert into Tweets values (?, ?, ?, ?, ?)', 
+                status['user']['screen_name'],  
+                datetime.datetime.strptime(status['created_at'], '%a %b %d %H:%M:%S +0000 %Y'), 
+                status['text'], 
+                status['favorite_count'], 
+                status['retweet_count'])
+            #puts tweets into dict
+            # dict_['user'].append(status['user']['screen_name'])
+            # dict_['date'].append(status['created_at'])
+            # dict_['text'].append(status['text'])
+            # dict_['favorite_count'].append(status['favorite_count'])
+            #puts tweets into other dictionary
+            # list_.append({
+            #     'user': status['user']['screen_name'],
+            #     'date': status['created_at'],
+            #     'text': status['text'],
+            #     'favorite_count': status['favorite_count']
+            #})
     cursor.commit()
     #puts dictionary into panda dataframe
     # df = pd.DataFrame(dict_)
